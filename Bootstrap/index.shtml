@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title></title>
+		<meta name="Brick Logistic Demo" content="">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+		<!-- Shared jQuery & plugins CSS -->
+		<link href="shared/css/jquery/ui-lightness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+
+		<!-- Shared & Site css -->
+		<link href="shared/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+		<link href="shared/css/fontawesome/css/all.min.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="shared/css/global_reset.css">
+		<link rel="stylesheet" href="shared/css/site_reset.css">
+		<link rel="stylesheet" href="shared/css/site.css">
+		<link rel="stylesheet" href="css/site.css">
+
+		<!-- JQuery & Plugins -->
+		<script type="text/javascript" src="shared/js/jquery/jquery-3.4.1.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery-ui.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery.browser.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery.bpopup.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery.cookie.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery.loading.min.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/jquery.filter_input.min.js"></script>
+
+		<script src="shared/js/popper/popper-1.14.3.min.js"></script>
+		<script src="shared/js/bootstrap/bootstrap.min.js"></script>
+
+		<!-- DatePicker Localization  -->
+		<script type="text/javascript" src="shared/js/jquery/localization/datepicker-fr.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/localization/datepicker-ru.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/localization/datepicker-es.js"></script>
+		<script type="text/javascript" src="shared/js/jquery/localization/datepicker-de.js"></script>
+
+		<!-- Shared modules -->
+		<script type="text/javascript" src="shared/js/global.js"></script>
+		<script type="text/javascript" src="shared/js/web_app.js"></script>
+		<script type="text/javascript" src="shared/js/lang_set.js"></script>
+		<script type="text/javascript" src="shared/js/ajax.js"></script>
+		<script type="text/javascript" src="shared/js/phase_loader.js"></script>
+		<script type="text/javascript" src="shared/js/bootstrap.js"></script>
+
+		<!-- Custom modules -->
+		<script type="text/javascript" src="js/main.js"></script>
+
+		<!--#include virtual="custom.shtml" -->
+	</head>
+
+	<body></body>
+</html>

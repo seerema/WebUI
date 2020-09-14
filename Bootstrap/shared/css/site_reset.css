@@ -1,0 +1,143 @@
+/*
+ * Copyright 2014-2015 IvaLab Inc. and contributors below
+ * 
+ * Released under the MIT license
+ * http://opensource.org/licenses/MIT
+ *
+ * Date: 2015-03-03
+ * 
+ * Contributors:
+ * 
+ */
+
+/* Reset CSS */
+.sbs div,
+.sbs span,
+.sbs applet,
+.sbs object,
+.sbs iframe,
+.sbs h1,
+.sbs h2,
+.sbs h3,
+.sbs h4,
+.sbs h5,
+.sbs h6,
+.sbs p,
+.sbs blockquote,
+.sbs pre,
+.sbs a,
+.sbs abbr,
+.sbs acronym,
+.sbs address,
+.sbs big,
+.sbs cite,
+.sbs code,
+.sbs del,
+.sbs dfn,
+.sbs em,
+.sbs img,
+.sbs ins,
+.sbs kbd,
+.sbs q,
+.sbs s,
+.sbs samp,
+.sbs small,
+.sbs strike,
+.sbs strong,
+.sbs sub,
+.sbs sup,
+.sbs tt,
+.sbs var,
+.sbs b,
+.sbs u,
+.sbs i,
+.sbs center,
+.sbs dl,
+.sbs dt,
+.sbs dd,
+.sbs ol,
+.sbs ul,
+.sbs li,
+.sbs fieldset,
+.sbs form,
+.sbs label,
+.sbs legend,
+.sbs table,
+.sbs caption,
+.sbs tbody,
+.sbs tfoot,
+.sbs thead,
+.sbs tr,
+.sbs th,
+.sbs td,
+.sbs article,
+.sbs aside,
+.sbs canvas,
+.sbs details,
+.sbs embed,
+.sbs figure,
+.sbs figcaption,
+.sbs footer,
+.sbs header,
+.sbs hgroup,
+.sbs menu,
+.sbs nav,
+.sbs output,
+.sbs ruby,
+.sbs section,
+.sbs summary,
+.sbs time,
+.sbs mark,
+.sbs audio,
+.sbs video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+}
+
+.sbs {
+  font-size: 16px;
+  line-height: normal;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.sbs select, 
+.sbs input,
+.sbs textarea {
+  margin: 0;
+  width: auto;
+  height: auto;
+  padding: 1px;
+  color:#000000;
+  font-size: 1em;
+  border-radius: 5px;
+  line-height: normal;
+  border: 1px solid #c5c5c5;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.sbs input[type=color] {
+  width: 1em;
+  height: 1em;
+}
+
+.sbs button {
+  font-size: 1em;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.sbs table {
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.sbs label {
+  display: inline;
+  line-height: normal;
+}
+
+.sbs label.bold {
+  font-weight: bold;
+}

@@ -1,0 +1,346 @@
+.sbs {
+  position: relative;
+  min-height: 100vh;
+}
+
+.sbs .hidden {
+  display: none;
+  visibility: inherit;
+}
+
+.sbs .page-loader {
+  padding-bottom: 10px;
+}
+
+.sbs .wait-spinner {
+  display: none;
+  width: 64px;
+  height: 64px;
+}
+
+.sbs .hidden {
+  display: none;
+  visibility: inherit;
+}
+
+.sbs .error {
+  background-color: #FFAA90;
+}
+
+.sbs .error-text {
+  color: #FF3C00;
+}
+
+.sbs .success-text {
+  color: #3F913F;
+}
+
+.sbs .warn-text {
+  color: orange;
+}
+
+.sbs .rfloat {
+  float: right;
+}
+
+.sbs .lfloat {
+  float: left;
+}
+
+.sbs .ralign {
+  text-align: right;
+}
+
+.sbs .lalign {
+  text-align: left;
+}
+
+.sbs .center {
+  text-align: center;
+}
+
+.sbs .nowrap {
+  white-space: nowrap;
+}
+
+/*********** Mod Menu ***********/
+
+.sbs img.menu {
+  top: 0px;
+  z-index: 2;
+  right: 5px;
+  position: fixed;
+  cursor: pointer;
+}
+
+.sbs div.menu {
+  top: 5px;
+  right: 5px;
+  position: fixed;
+  background: white;
+  border: 1px solid silver;
+  border-radius: 5px;
+  padding-top: 50px;
+  padding-bottom: 10px;
+}
+
+.sbs ul.menu{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.sbs li.menu-item {
+  cursor: pointer;
+  font-size: 1.3em;
+  list-style: none;
+  vertical-align: bottom;
+  padding: 0.2em 0 0.2em 0;
+}
+
+.sbs li.menu-item:hover {
+	background-color: #f2f2f2;
+}
+    
+.sbs li.menu-item img {
+  padding-right: 5px;
+  vertical-align: bottom;
+}
+
+/*********** Error Window ***********/
+
+.sbs .error-window {
+  padding: 2em;
+  visibility: inherit;
+}
+
+.sbs .error-window .dialog-header {
+  white-space: nowrap;
+  margin-bottom: 0.5em;
+}
+
+.sbs .error-window .dialog-sub-header {
+  padding-bottom: 5px;
+}
+
+.sbs .error-window button.b-close {
+  background-color: #990D00;
+}
+
+.sbs .error-window button.b-close:hover {
+  background-color: #241303;
+}
+
+.sbs .btn-err-toggle {
+  margin: 5px;
+  padding: 0 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+.sbs .btn-err-toggle img {
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.sbs .err-info {
+  overflow-x: auto;
+}
+
+.sbs .err-details {
+  white-space: nowrap;
+}
+
+.sbs .dialog-header {
+  padding: 2px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.sbs .dialog-sub-header {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.sbs .dialog-text {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+/*********** Success Window ***********/
+
+.sbs .success-window {
+  padding: 12px 5px 3px 5px;
+  border: 2px solid #002F00;
+  background-color: #90EE90;
+  visibility: inherit;
+}
+
+.sbs .success-window button.b-close {
+  background-color: #002F00;
+}
+
+.sbs .success-window button.b-close:hover {
+  background-color: #006200;
+}
+
+/*********** bPopup ***********/
+
+.sbs button.b-close {
+  top: -12px;
+  right: -15px;
+  color: white;
+  cursor: pointer;
+  box-shadow: none;
+  padding: 0 6px 2px;
+  position: absolute;
+  font: bold 131% sans-serif;
+  border-radius: 7px;
+}
+
+.sbs .wait-spinner {
+  display: none;
+  width: 64px;
+  height: 64px;
+}
+
+/*********** System Dialog ***********/
+
+.sbs .dialog {
+  padding: 2px;
+  display: none;
+  background: #efefef;
+}
+
+.sbs .dialog > .sd-ctrl {
+  margin-left: 4px;
+}
+
+.sbs .dialog > .sd-label,
+.sbs .dialog > .sd-ctrl button {
+  font-weight: bold;
+  padding-left: 2px;
+}
+
+.sbs .sd-ctrl button.btn-cancel {
+  margin-left: 4px;  
+}
+
+/*********** Simple Dialog ***********/
+
+.sbs .simple-dialog {
+  visibility: inherit;
+}
+
+/*********** bPopup ***********/
+
+.sbs button.b-close {
+  top: -12px;
+  right: -15px;
+  color: white;
+  cursor: pointer;
+  box-shadow: none;
+  padding: 0 6px 2px;
+  position: absolute;
+  font: bold 131% sans-serif;
+  border-radius: 7px;
+}
+
+.sbs .wait-spinner {
+  display: none;
+  width: 64px;
+  height: 64px;
+}
+
+/*********** Wrappers ***********/
+
+.sbs .wrapper,
+.sbs .wrapper-ctrl,
+.sbs .wrapper-ctrl-ex {
+  border-width: 2px;
+}
+
+.sbs .wrapper,
+.sbs .wrapper-thin,
+.sbs .wrapper-ctrl,
+.sbs .wrapper-ctrl-ex {
+  border-radius: 5px;
+  border-color: #afafaf;
+  border-style: solid;
+}
+
+/*********** Loading Buttons ***********/
+
+.sbs .btn-loading,
+.sbs .btn-loading-min,
+.sbs .btn-loading-right,
+.sbs .btn-loading-left {
+  vertical-align: bottom;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-image: url(../images/loading_circle.gif);
+}
+
+.sbs .btn-loading-min {
+  min-width: 12px;
+  height: 12px;
+  background-size: 12px 12px;
+}
+
+.sbs .btn-loading,
+.sbs .btn-loading-right,
+.sbs .btn-loading-left {
+  min-width: 19px;
+  height: 19px;
+  margin-top: 3px;
+  padding-left: 2px;
+  background-size: 19px 19px;
+}
+
+.sbs .btn-loading-right {
+  background-position-x: right;
+}
+
+.sbs .btn-loading-left {
+  background-position-x: left;
+}
+
+/*********** Sign in form ***********/
+
+.sbs form.form-signin {
+	border-radius: 5px;
+	border-color: #afafaf;
+	border-style: solid;
+	border-width: 2px;
+	background: white;
+	padding: 20px;
+}
+
+.sbs form.form-signin input {
+	width: 100%;
+}
+
+.sbs form.form-signin h2 {
+	text-align: center;
+}
+
+.sbs form.form-signin p {
+    margin: 15px 0 15px 0;
+}
+
+.sbs form.form-signin .login-error {
+	color: red;
+    font-weight: bold;
+}
+
+.sbs .footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%
+}
+
+.sbs .footer .copyright {
+	width: 100%;
+	text-align: center;
+}

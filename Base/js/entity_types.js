@@ -77,7 +77,7 @@
         })(column)
       } else if (column.flang) {
         cdef.render = function(data, type, row, meta) {
-          return web_app.t(data);
+          return web_app.ts(data);
         };
       }
      
@@ -125,12 +125,12 @@
 
         // Same field name can be used in different categories
         if (this.cfmap[cfield.name] !== undefined) {
-          this.cfmap[cfield.name][cfield.field_category.id] = cfield;
+          this.cfmap[cfield.name][cfield.field_cat.id] = cfield;
           continue;
         }
 
         this.cfmap[cfield.name] = {};
-        this.cfmap[cfield.name][cfield.field_category.id] = cfield;
+        this.cfmap[cfield.name][cfield.field_cat.id] = cfield;
 
         var fname = cfield.name;
         
@@ -163,7 +163,7 @@
 
         // DataTable configuration record
         var cdef = {
-          title: this.web_app.t(fname),
+          title: this.web_app.ts(fname),
           data: fname,
           defaultContent: ""
         };

@@ -40,7 +40,7 @@
   };
 
   BaseInput.prototype.t = function(lbl_id) {
-    return this.web_app.t(lbl_id);
+    return this.web_app.ts(lbl_id);
   };
 
   BaseInput.prototype.get_filter = function(column, filters) {
@@ -140,7 +140,7 @@
       var value = data[this.column.db_name];
 
       // Aplly ont-the-fly translation, if required
-      this.input.val(this.column.flang ? this.web_app.t(value) : value);
+      this.input.val(this.column.flang ? this.web_app.ts(value) : value);
     }
   };
 
@@ -262,7 +262,7 @@
   TextArea.prototype.get_text_input = function(mod_name, filters) {
     var el = $('<textarea class="field" placeholder="' +
         (this.column.max_size === undefined 
-          ? this.web_app.t("LL_MAX_255_CHAR") 
+          ? this.web_app.ts("LL_MAX_255_CHAR") 
           : this.column.max_size + " " + this.web_app.t("LL_CHAR_MAX")) + '"' +
       (this.column.max_size !== undefined 
         ? ' maxlength="' + this.column.max_size + '"' 
@@ -333,7 +333,7 @@
 
         var text = record[ref_field];
         opts += '<option value="' + record.id + '"' + '>' +
-          (this.column.flang ? this.web_app.t(text) : text) + '</option>';
+          (this.column.flang ? this.web_app.ts(text) : text) + '</option>';
       }
     }
     
@@ -423,7 +423,7 @@
     var text = flong ? this.mod.get_ref_value(data, this.column.db_name) : data[db_name];
     
     // Apply on-th-fly translation, if required
-    this.el.html(this.column.flang ? this.web_app.t(text) : text);
+    this.el.html(this.column.flang ? this.web_app.ts(text) : text);
   };
 
   StaticValue.prototype.save_value = function(data) {

@@ -60,8 +60,14 @@
     this.ferror = true;
   };
 
-  BaseModule.prototype.get_api_prefix = function() {
+  BaseModule.prototype.get_mod_prefix = function() {
     return this.name + "/";
+  };
+
+  BaseModule.prototype.get_api_prefix = function(entity) {
+    return (entity.api_prefix !== undefined
+      ? entity.api_prefix 
+      : "");
   };
 
   BaseModule.prototype.get_nav_items = function() {
@@ -102,7 +108,9 @@
     var fextra = xtype.data.length > 10;
     
     var wrapper = $('<div class="entity-list-wrapper"></div>');
-    var table = $('<table class="entity-list hover"></table>');
+
+    // Set fixed style so it not overwritten by width: 0px
+    var table = $('<table class="entity-list hover" style="width:100%"></table>');
 
     wrapper.append(table);
     widget.append(wrapper);
@@ -112,7 +120,13 @@
       info: fextra,
       searching: fextra, 
       columns: xtype.columns,
-      data: xtype.data
+      data: xtype.data,
+ 
+      createdRow: function( row, data, dataIndex ) {
+        // Disable rows with read_only data flag
+        if (data.read_only)
+            $( row ).addClass('row-disabled');
+      }
     };
 
     if (entity.defs !== undefined)
@@ -121,12 +135,12 @@
     entity.dtable = table.DataTable(dconfig);
         
     var btns = $('<div>' + 
-      '<div class="d-flex justify-content-around entity-ctrl-btns">' + 
+      '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
+        '<button type="button" class="btn btn-secondary wclose">' + this.t("LL_CLOSE") + '</button>' +
+        '<button type="button" class="btn btn-secondary refresh">' + this.t("LL_REFRESH") + '</button>' +
         (!entity.disable_update
           ? '<button type="button" class="btn btn-primary add">' + this.t("LL_ADD") + '</button>'
           : "") + 
-        '<button type="button" class="btn btn-secondary refresh">' + this.t("LL_REFRESH") + '</button>' +
-        '<button type="button" class="btn btn-primary wclose">' + this.t("LL_CLOSE") + '</button>' +
       '</div>' + 
     '</div>');
 
@@ -140,6 +154,10 @@
      $('tbody', table).on('click', 'tr', function () {
         var data = entity.dtable.row( this ).data();
         if (data !== undefined) {
+          // Quick check for read-only field
+          if (data.read_only)
+            return;
+
           // Add filter, if any
           if (filter !== undefined)
             $.extend(data, filter);
@@ -210,7 +228,8 @@
         // Create new entity
         //-- 11
         web_app.put_ajax_data_ext(web_app.make_rel_req(
-                me.get_api_prefix() + entity.api, JSON.stringify(upd)), 11,
+                me.get_mod_prefix() + me.get_api_prefix(entity) + 
+                entity.api, JSON.stringify(upd)), 11,
           function() {
             // Refresh callback
             var fresh;
@@ -234,7 +253,7 @@
                                 sname, filters, stitle, on_save);
 
     var btns = $('<div>' +
-      '<div class="d-flex justify-content-around entity-ctrl-btns">' + 
+      '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
         (widget.data("bshow")
           ? '<button type="button" class="btn btn-secondary back">' +
             this.t("LL_BACK") + '</button>'
@@ -343,7 +362,7 @@
         var value = this.mod.get_ref_value(ditem, column.db_name);
 
         dialog += '<td>' + (column.flang 
-          ? web_app.t(value) 
+          ? web_app.ts(value) 
           : (typeof column.formatter == "function"
             ? column.formatter(value) 
             : value)) + '</td>';
@@ -411,7 +430,7 @@
       var row = $('<tr>' +
         '<td class="field-title">' +
             // Check if custom title set
-            this.t(data !== undefined
+            web_app.ts(data !== undefined
                 ? column.title_field !== undefined
                   ? this.mod.get_ref_value(data, column.title_field)
                   : column.title
@@ -532,7 +551,7 @@
 
       // Apply on-the-fly translation, if required.
       opt_list += '<option value="' + ditem.id + '">' + 
-        (wflow.flang ? this.t(ditem.name) : ditem.name) + '</option>';
+        (wflow.flang ? web_app.ts(ditem.name) : ditem.name) + '</option>';
     }
     
     var widget = $('<div class="widget wflow-' +
@@ -549,7 +568,7 @@
                     web_app.t("LL_SELECT") +'</option>'
                 : "") + opt_list +
             '</select>' +
-            (!this.get_entity(wflow.name).disable_update
+            (!this.get_entity(wflow.name).disable_wflow_update
               ? '<button class="btn btn-secondary add-new">' + 
                   web_app.t("LL_ADD_NEW") + '</button>'
               : ""
@@ -646,7 +665,7 @@
       value: ditem.id,
       
       // Apply on-th-fly translation, if required
-      text: wflow.flang ? this.t(text) : text
+      text: wflow.flang ? web_app.ts(text) : text
     };
 
     if (wflow.ex_fields !== undefined) {
@@ -692,7 +711,7 @@
 
     //-- 14
     web_app.get_ajax_ext(web_app.make_rel_req(
-                            this.get_api_prefix() + name.replace("::", "/")), 14,
+              this.get_mod_prefix() + name.replace("::", "/")), 14,
       function(data) {
         me.mod.load_entity(me.name, entity, name, data);
         data = entity.xtype.refresh_data(data);
@@ -735,7 +754,8 @@
     // Delete entity
     //-- 13
     web_app.delete_ajax_ext(web_app.make_rel_req_path(
-                    this.get_api_prefix() + entity.api, data.id), 13,
+        this.get_mod_prefix() + this.get_api_prefix(entity) +
+        entity.api, data.id), 13,
       function() {
         // Close current widget
         me.mod.widgets.close();
@@ -785,7 +805,7 @@
           value: ditem.id,
 
           // span text. Apply on-the-fly translation, if required
-          text: column.flang ? this.t(ditem[el_name]) : ditem[el_name]
+          text: column.flang ? web_app.ts(ditem[el_name]) : ditem[el_name]
         };
         
         // Check for extra fields
@@ -823,8 +843,8 @@
         // Update new entity
         //-- 12
         web_app.post_ajax_data_ext(web_app.make_rel_req_path(
-              me.get_api_prefix() + (entity.update_prefix !== undefined
-                ? entity.update_prefix : "") + entity.api, data.id, JSON.stringify(upd)), 12,
+              me.get_mod_prefix() + me.get_api_prefix(entity) + 
+              entity.api, data.id, JSON.stringify(upd)), 12,
           function() {
             // Close current widget
             me.mod.widgets.close();

@@ -16,6 +16,12 @@
   
   // List of entities with field mapping
   var ENTITIES = {
+   
+    "field_cats": web_app.mod.get_field_cats_entity("BUSINESS_FCATS"),
+
+    "fields": web_app.mod.get_fields_entity("BUSINESS_FIELDS", "LL_SELECT_BUSINESS_CATEGORY"),
+
+
     'countries': {
       api: "country",
       type: "basic_entity",
@@ -28,7 +34,7 @@
         title: "LL_NAME",
         db_name: "name",
         type: "user_input",
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       },
@@ -99,7 +105,7 @@
         type: "user_input",
         db_name: "name",
         
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       },
@@ -151,7 +157,7 @@
         db_name: "name",
         type: "user_input",
         type: "user_input",
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       },
@@ -227,7 +233,7 @@
         title: "LL_ADDR_LINE_2",
         db_name: "line2",
         type: "user_input",
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         def_value: ""
       },
@@ -283,8 +289,8 @@
         // Entity name
         name: "field_cats",
 
-        title: "LL_SELECT_BUSINESS_TYPE",
-        
+        title: "LL_SELECT_BUSINESS_CATEGORY",
+
         // Translation required
         flang: true
       }],
@@ -293,12 +299,12 @@
         title: "LL_NAME",
         type: "user_input",
         db_name: "name",
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       },
       {
-        title: "LL_TYPE",
+        title: "LL_CATEGORY",
         type: "static_value",
         db_name: "field_cat.name",
         // Data needs to be translated
@@ -328,10 +334,6 @@
       }
     },
 
-    'fields': {
-      hidden: true
-    },
-
     'comm_medias': {
       hidden: true,
 
@@ -341,24 +343,6 @@
         db_name: "name",
         flang: true,
         max_size: 25,
-        width: "15em",
-        is_mandatory: true
-      }]
-    },
-
-    "field_cats": {
-      api: "field_cat",
-      hidden: true,
-
-      // Disable adding new field category
-      disable_update: true,
-
-      "columns": [{
-        title: "LL_NAME",
-        type: "user_input",
-        db_name: "name",
-        flang: true,
-        max_size: 255,
         width: "15em",
         is_mandatory: true
       }]

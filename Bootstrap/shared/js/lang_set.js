@@ -159,6 +159,14 @@
       "de": "Einloggen"
     },
     
+    LL_SIGN_INTO: {
+      "en": "Sign In",
+      "fr": "Signer Dans",
+      "ru": "Зарегистрироваться",
+      "es": "Registrarse",
+      "de": "Einloggen"
+    },
+
     LL_CREATE: {
       "en": "Create",
       "fr": "Créer",

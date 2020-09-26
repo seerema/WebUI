@@ -12,7 +12,7 @@
 
 "use strict";
 
-$(document).ready(function() {
+$(function() {
   jWebApp.init_bootstrap().start();
 });
 
@@ -254,7 +254,9 @@ $(document).ready(function() {
           '</p>' +
           '<input name="_csrf" type="hidden" value="">' +
           '<div>' +
-            '<button class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>' +
+            '<button class="btn btn-lg btn-primary btn-block" type="button">' +
+              this.web_app.t("LL_SIGN_INTO") +
+            '</button>' +
            '</div>' +
         '</form>' +
       '</div>' +

@@ -81,17 +81,32 @@
 
 .sbs .widget.entity-list {
     padding: 0 5px;
+    text-align: center;
 }
 
 .sbs .entity-list-wrapper {
-	border: 1px solid #47748b;
     padding: 5px;
-    border-radius: 5px;
     overflow: auto;
+    display: inline-block;
+}
+
+.sbs table.dataTable {
+    border: 1px solid #111;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    min-width: 460px;
+}
+
+.sbs table.dataTable tbody tr {
+    background-color: inherit;
 }
 
 .sbs table.dataTable.hover tbody tr:hover,table.dataTable.display tbody tr:hover {
     cursor: pointer;
+}
+
+.sbs .entity-list-wrapper .dataTables_length {
+    padding-bottom: 10px;
 }
 
 .sbs .entity-ctrl-btns {
@@ -152,4 +167,17 @@
     float: left;
     padding-top: 10px;
     padding-left: 10px;
+}
+
+.sbs table.entity-list tr.row-disabled {
+    color: gray;
+}
+
+.sbs table.dataTable.hover tbody tr.row-disabled:hover {
+    cursor: not-allowed;
+    background-color:white
+}
+
+.sbs .entity-ctrl-btns button {
+    margin: 0 75px;
 }

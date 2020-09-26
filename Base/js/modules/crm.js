@@ -32,7 +32,7 @@
       title: "LL_NAME",
       type: "user_input",
       db_name: "name",
-      max_size: 255,
+      max_size: 191,
       width: "15em",
       is_mandatory: true
     },
@@ -140,7 +140,7 @@
 
   var MGR_CRM_API = $.extend(true, {
     disable_update: true,
-    update_prefix: "private/",
+    api_prefix: "private/",
     roles: ["ROLE_SBS_ADMIN", "ROLE_SBS_MANAGER", "ROLE_SBS_CRM_MANAGER"],
   }, CRM_API);
 
@@ -148,6 +148,10 @@
 
   // List of entities with field mapping
   var ENTITIES = {
+    "field_cats": web_app.mod.get_field_cats_entity("CRM_FCATS"),
+
+    "fields": web_app.mod.get_fields_entity("CRM_FIELDS", "LL_SELECT_CRM_CATEGORY"),
+
     // My Active Leads
     'entities::lead': $.extend(true, {title: "my_leads"}, CRM_API),
 
@@ -156,28 +160,6 @@
 
     // All customers
     'private::entities': $.extend(true, {title: "all_customers"}, MGR_CRM_API),
-
-    'fields': {
-      hidden: true
-    },
-
-    "field_cats": {
-      api: "field_cat",
-      hidden: true,
-
-      // Disable adding new field category
-      disable_update: true,
-
-      "columns": [{
-        title: "LL_NAME",
-        type: "user_input",
-        db_name: "name",
-        flang: true,
-        max_size: 255,
-        width: "15em",
-        is_mandatory: true
-      }]
-    },
 
     "statuses": {
       hidden: true,

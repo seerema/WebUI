@@ -14,7 +14,7 @@
 
 // List of labels for Base Services
 (function(web_app) {
-  web_app.load_ll_set({
+  var SBS_LL_SET = {
     LL_HIDE_SIDEBAR: {
       "en": "Hide Sidebar",
       "fr": "Masquer la barre latérale",
@@ -760,7 +760,7 @@
     },
 
     LL_LIST_OF_MY_LEADS: {
-      "en": "List of my Potential Clients",
+      "en": "List of My Potential Clients",
       "fr": "Liste de mes clients potentiels",
       "ru": "Список моих Потенциальные Клиентов",
       "es": "Lista de mis clientes potenciales",
@@ -1023,12 +1023,12 @@
       "de": "Wählen Sie Kundentyp"
     },
 
-    LL_SELECT_BUSINESS_TYPE: {
-      "en": "Select Business Type",
-      "fr": "Sélectionnez le type d'entreprise",
-      "ru": "Выберите Тип Бизнеса",
-      "es": "Seleccionar tipo de negocio",
-      "de": "Wählen Sie Geschäftstyp"
+    LL_SELECT_BUSINESS_CATEGORY: {
+      "en": "Select Business Category",
+      "fr": "Sélectionnez la catégorie d'entreprisee",
+      "ru": "Выберите Бизнес Инфо Категорию",
+      "es": "Seleccionar categoría empresarial",
+      "de": "Wählen Sie Geschäftskategorie"
     },
 
     LL_SELECT_TASK_CATEGORY: {
@@ -1045,8 +1045,176 @@
       "ru": "Crm №",
       "es": "Crm #",
       "de": "Crm #"
+    },
+
+    LL_CATEGORY: {
+      "en": "Category",
+      "fr": "Catégorie",
+      "ru": "Категория",
+      "es": "Categoría",
+      "de": "Kategorie"
+    },
+
+    LL_FIELD_CATS: {
+      "en": "Field Categories",
+      "fr": "Catégories de champs",
+      "ru": "Категории Полей",
+      "es": "Categorías de campo",
+      "de": "Feldkategorien"
+    },
+
+    LL_LIST_OF_BUSINESS_FCATS: {
+      "en": "List of Business Info Categories",
+      "fr": "",
+      "ru": "Список Бизнесс Инфо Категорий",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_BUSINESS_FCATS_FIELD_CAT: {
+      "en": "Add New Business Info Category",
+      "fr": "Liste des catégories d'informations commerciales",
+      "ru": "Добавить Новую Бизнесс Инфо Категорию",
+      "es": "Lista de categorías de información empresarial",
+      "de": "Liste der Geschäftsinfokategorien"
+    },
+
+    LL_UPDATE_EXISTING_BUSINESS_FCATS_FIELD_CAT: {
+      "en": "Update Existing Business Info Category",
+      "fr": "Mettre à jour la catégorie d'informations sur l'entreprise existante",
+      "ru": "Изменить Существующую Бизнесс Инфо Категорию",
+      "es": "Actualizar categoría de información comercial existente",
+      "de": "Aktualisieren Sie die vorhandene Geschäftsinfokategorie"
+    },
+   
+    LL_FIELDS: {
+      "en": "Fields",
+      "fr": "Des champs",
+      "ru": "Поля",
+      "es": "Campos",
+      "de": "Felder"
+    },
+
+    LL_LIST_OF_BUSINESS_FIELDS: {
+      "en": "List of Business Info Fields",
+      "fr": "",
+      "ru": "Список Бизнесс Инфо Полей",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_BUSINESS_FIELDS_FIELD: {
+      "en": "Add New Business Info Field",
+      "fr": "",
+      "ru": "Добавить новое Бизнес Инфо Поле",
+      "es": "",
+      "de": ""
+    },
+
+    LL_UPDATE_EXISTING_BUSINESS_FIELDS_FIELD: {
+      "en": "Update Existing Business Info Field",
+      "fr": "",
+      "ru": "Изменить Существующее Бизнесс Инфо Поле",
+      "es": "",
+      "de": ""
+    },
+
+    LL_LIST_OF_TASK_FCATS: {
+      "en": "List of Task Categories",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_TASK_FCATS_FIELD_CAT: {
+      "en": "Add New Task Category",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_UPDATE_EXISTING_TASK_FCATS_FIELD_CAT: {
+      "en": "Update Existing Task Category",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_LIST_OF_TASK_FIELDS: {
+      "en": "List of Task Field",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_TASK_FIELDS_FIELD: {
+      "en": "Add New Task Field",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_UPDATE_EXISTING_TASK_FIELDS_FIELD: {
+      "en": "Update Existing Task Field",
+      "fr": "",
+      "ru": "Изменить Существующее Поле Задачи",
+      "es": "",
+      "de": ""
+    },
+
+    LL_LIST_OF_CRM_FCATS: {
+      "en": "List of CRM Categories",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_CRM_FCATS_FIELD_CAT: {
+      "en": "Add New CRM Category",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_UPDATE_EXISTING_CRM_FCATS_FIELD_CAT: {
+      "en": "Update Existing CRM Category",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_LIST_OF_CRM_FIELDS: {
+      "en": "List of CRM Field",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_ADD_NEW_CRM_FIELDS_FIELD: {
+      "en": "Add New CRM Field",
+      "fr": "",
+      "ru": "",
+      "es": "",
+      "de": ""
+    },
+
+    LL_UPDATE_EXISTING_CRM_FIELDS_FIELD: {
+      "en": "Update Existing CRM Field",
+      "fr": "",
+      "ru": "Изменить Существующее Поле CRM",
+      "es": "",
+      "de": ""
     }
-    
+
     /*
     LL_: {
       "en": "",
@@ -1056,5 +1224,17 @@
       "de": ""
     }
     */
-  });
+  };
+
+  // Add duplicates
+  SBS_LL_SET.LL_BUSINESS_FCATS = SBS_LL_SET.LL_FIELD_CATS;
+  SBS_LL_SET.LL_BUSINESS_FIELDS = SBS_LL_SET.LL_FIELDS;
+  
+  SBS_LL_SET.LL_TASK_FCATS = SBS_LL_SET.LL_FIELD_CATS;
+  SBS_LL_SET.LL_TASK_FIELDS = SBS_LL_SET.LL_FIELDS;
+
+  SBS_LL_SET.LL_CRM_FCATS = SBS_LL_SET.LL_FIELD_CATS;
+  SBS_LL_SET.LL_CRM_FIELDS = SBS_LL_SET.LL_FIELDS;
+
+  web_app.load_ll_set(SBS_LL_SET);
 })(jWebApp);

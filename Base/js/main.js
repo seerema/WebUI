@@ -161,6 +161,8 @@
         if (!this.web_app.is_empty_array(roles)) {
           // Access flag
           var faccess = false;
+
+          // Check roles
           for (var i in roles) {
             if ($.inArray(roles[i], entity.roles) >= 0) {
               faccess = true;
@@ -172,7 +174,10 @@
             // No access. Mark entity as hidden to prevent
             // further processing.
             entity.hidden = true;
-            continue;
+
+            // read-only flag overrides role access
+            if (!entity.read_only)
+              continue;
           }
         }
       }
@@ -248,7 +253,7 @@
         var cfield = fields[j];
         
         // Only index entity fields with same field_cat id as main entity
-        if (cfield.field.field_category.id != fid)
+        if (cfield.field.field_cat.id != fid)
           continue;
 
         hfields[cfield.field.name] = cfield;
@@ -407,6 +412,69 @@
     }
   };
 
+  mod.get_field_cats_entity = function(title) {
+    return {
+      api: "field_cat",
+      title: title,
+      type: "basic_entity",
+      api_prefix: "admin/",
+      roles: ["ROLE_SBS_ADMIN"],
+      
+      // Disable adding new field category
+      disable_wflow_update: true,
 
+
+      // Not visible in menu but only can use data
+      read_only: true,
+
+      "columns": [{
+        title: "LL_NAME",
+        type: "user_input",
+        db_name: "name",
+        flang: true,
+        max_size: 50,
+        width: "15em",
+        is_mandatory: true
+      }]
+    }
+  }
+
+  mod.get_fields_entity = function(title, wflow_title) {
+    return {
+      api: "field",
+      title: title,
+      type: "basic_entity",
+      api_prefix: "admin/",
+      roles: ["ROLE_SBS_ADMIN"],
+
+      // Not visible in menu but only can use data
+      read_only: true,
+
+      workflows: [{
+        // Entity name
+        name: "field_cats",
+
+        title: wflow_title,
+
+        // Translation required
+        flang: true
+      }],
+
+      "columns": [{
+        title: "LL_CATEGORY",
+        type: "static_value",
+        db_name: "field_cat.name",
+        flang: true,
+      },{
+        title: "LL_NAME",
+        type: "user_input",
+        db_name: "name",
+        flang: true,
+        max_size: 50,
+        width: "15em",
+        is_mandatory: true
+      }]
+    }
+  }
 
 })(jQuery, jWebApp.mod);

@@ -758,7 +758,7 @@
     LL_NEXT: {
       "en": "Next",
       "fr": "Prochain",
-      "ru": "Следующщий",
+      "ru": "Следующий",
       "es": "Próximo",
       "de": "Nächster"
     },

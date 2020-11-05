@@ -14,6 +14,8 @@
 
 (function($, web_app) {
   
+  var PRIVATE_URL = "private/";
+  
   // List of entities with field mapping
   var ENTITIES = {
    
@@ -25,6 +27,8 @@
     'countries': {
       api: "country",
       type: "basic_entity",
+      security_prefix: PRIVATE_URL,
+
       defs: [{
         targets: 1,
         className: 'dt-body-right'
@@ -79,6 +83,7 @@
     'regions': {
       api: "region",
       type: "basic_entity",
+      security_prefix: PRIVATE_URL,
       
       // Custom title for update region
       // It's either taking from data or from previous selection
@@ -133,6 +138,8 @@
     'cities': {
       api: "city",
       type: "basic_entity",
+      security_prefix: PRIVATE_URL,
+
       workflows: [{
         // Catalog name
         name: "countries",
@@ -188,6 +195,8 @@
     'addresses': {
       api: "address",
       type: "basic_entity",
+      security_prefix: PRIVATE_URL,
+      
       workflows: [
         {
           name: "countries",
@@ -284,6 +293,7 @@
       api: "entity",
       type: "field_list",
       title: "business_info",
+      security_prefix: PRIVATE_URL,
 
       workflows: [{
         // Entity name
@@ -336,6 +346,7 @@
 
     'comm_medias': {
       hidden: true,
+      security_prefix: PRIVATE_URL,
 
       "columns": [{
         title: "LL_NAME",

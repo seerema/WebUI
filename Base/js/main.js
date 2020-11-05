@@ -397,7 +397,7 @@
           title: "LL_CREATED",
           db_name: "created",
           formatter: function(data) {
-            return web_app.format_date_time(data);
+            return mod.web_app.format_date_time(data, true);
           }
         },
         {

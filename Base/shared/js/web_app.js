@@ -898,14 +898,22 @@
     // Add Z to indicate it's UTC time
     var dts = new Date(value + 
       (value.substr(value.length -1) != "Z" ? "Z" : ""));
+    return this.format_date(dts) + " " + this.format_time(dts, fsec);
+  };
+
+  /**
+   *  Format time portion of Date into locale format
+   * @param {Date} value
+   */
+  WebApp.prototype.format_date= function(value) {
     return $.datepicker.formatDate(
-      $.datepicker.regional[web_app.lang].dateFormat, dts) + " " +
-      web_app.format_time(dts, fsec);
+      $.datepicker.regional[web_app.lang].dateFormat, value);
   };
 
   /**
    * Format time portion of Date into HH:MM:SS
-   * @param {Date} value 
+   * @param {Date} value
+   * @param {Boolean} Flag to add seconds 
    */
   WebApp.prototype.format_time = function(value, fsec) {
     var hours = value.getHours();

@@ -120,19 +120,26 @@
     // List of unique entity fields. Keep this dictionary array
     this.cfmap = {};
 
+    var cf_list = [];
+
     for (var i = 0; i < cfields.length; i++) {
-        var cfield = cfields[i];
+      var cfield = cfields[i];
 
-        // Same field name can be used in different categories
-        if (this.cfmap[cfield.name] !== undefined) {
-          this.cfmap[cfield.name][cfield.field_cat.id] = cfield;
-          continue;
-        }
-
-        this.cfmap[cfield.name] = {};
+      // Same field name can be used in different categories
+      if (this.cfmap[cfield.name] !== undefined) {
         this.cfmap[cfield.name][cfield.field_cat.id] = cfield;
+        continue;
+      }
 
-        var fname = cfield.name;
+      this.cfmap[cfield.name] = {};
+      this.cfmap[cfield.name][cfield.field_cat.id] = cfield;
+      cf_list.push(cfield.name);
+    }
+
+    cf_list.sort();
+
+    for (var i in cf_list) {
+      var fname = cf_list[i];
         
         // Check if custom formatter defined
         var fconfig = undefined;

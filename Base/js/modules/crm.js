@@ -63,7 +63,7 @@
           title: "LL_CREATED",
           db_name: "created",
           formatter: function(data) {
-            return web_app.format_date_time(data);
+            return web_app.format_date_time(data, true);
           }
         },
         {
@@ -144,7 +144,7 @@
     roles: ["ROLE_SBS_ADMIN", "ROLE_SBS_MANAGER", "ROLE_SBS_CRM_MANAGER"],
   }, CRM_API);
 
-  MGR_CRM_API.columns.push(web_app.mod.get_user_hist_column("LL_CRM_OWNER_HISTORY_CHANGE", "LL_CUST_REP"));
+  MGR_CRM_API.columns.push(web_app.mod.get_user_hist_column("LL_OWNER_HISTORY_CHANGE", "LL_CUST_REP"));
 
   // List of entities with field mapping
   var ENTITIES = {
@@ -156,7 +156,7 @@
     'entities::lead': $.extend(true, {title: "my_leads"}, CRM_API),
 
     // All my clients
-    'entities::customer': $.extend(true, {title: "my_customers"}, CRM_API),
+    'entities::customer': $.extend(true, {title: "my_customers", disable_update: true}, CRM_API),
 
     // All customers
     'private::entities': $.extend(true, {title: "all_customers"}, MGR_CRM_API),
@@ -169,7 +169,7 @@
         type: "user_input",
         db_name: "name",
         flang: true,
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       }]
@@ -185,7 +185,7 @@
         title: "LL_NAME",
         type: "user_input",
         db_name: "name",
-        max_size: 255,
+        max_size: 191,
         width: "15em",
         is_mandatory: true
       }]

@@ -70,6 +70,11 @@
       : "");
   };
 
+  BaseModule.prototype.get_security_prefix = function(entity) {
+    return (entity.security_prefix !== undefined
+      ? entity.security_prefix 
+      : "");
+  };
   BaseModule.prototype.get_nav_items = function() {
     var result = [];
     var entities = this.get_entities();
@@ -252,6 +257,14 @@
     var widget = this.get_widget(entity, name, data,
                                 sname, filters, stitle, on_save);
 
+    // Add custom buttons
+    if (entity.cust_btns !== undefined) {
+
+      for (var btn in entity.cust_btns) {}
+      
+    }
+
+    // Add main buttons
     var btns = $('<div>' +
       '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
         (widget.data("bshow")
@@ -576,7 +589,7 @@
           '</div>' +
         '</form>' +
       '</div>' +
-      '<div class="d-flex justify-content-around">' +
+      '<div class="d-flex justify-content-center dialog-ctrl-btns">' +
         (this.mod.widgets.slides[entity.api] !== undefined
           ? '<button type="button" class="btn btn-secondary back">' +
             this.t("LL_BACK") + '</button>'
@@ -754,7 +767,7 @@
     // Delete entity
     //-- 13
     web_app.delete_ajax_ext(web_app.make_rel_req_path(
-        this.get_mod_prefix() + this.get_api_prefix(entity) +
+        this.get_mod_prefix() + this.get_security_prefix(entity) + this.get_api_prefix(entity) +
         entity.api, data.id), 13,
       function() {
         // Close current widget

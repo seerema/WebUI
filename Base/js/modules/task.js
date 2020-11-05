@@ -62,7 +62,7 @@
           title: "LL_CREATED",
           db_name: "created",
           formatter: function(data) {
-            return web_app.format_date_time(data);
+            return web_app.format_date_time(data, true);
           }
         },
         {
@@ -103,7 +103,7 @@
   }, QUEST_API);
 
   MGR_QUEST_API.columns.push(
-    web_app.mod.get_user_hist_column("LL_CRM_OWNER_HISTORY_CHANGE", "LL_CUST_REP"));
+    web_app.mod.get_user_hist_column("LL_OWNER_HISTORY_CHANGE", "LL_CUST_REP"));
 
   // List of entities with field mapping
   var ENTITIES = {
@@ -115,7 +115,7 @@
     'entities::active': $.extend(true, {title: "my_active_quests"}, QUEST_API),
 
     // All my quests
-    'entities': $.extend(true, {title: "my_quests"}, QUEST_API),
+    'entities': $.extend(true, {title: "my_quests", disable_update: true}, QUEST_API),
 
     // All quests
     'private::entities': $.extend(true, {title: "private::quests"}, MGR_QUEST_API),

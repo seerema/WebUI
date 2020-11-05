@@ -439,7 +439,7 @@
       "de": "Geschäftsinformationen"
     },
     
-    LL_SITE: {
+    LL_WEB_SITE: {
       "en": "Web Site",
       "fr": "Site Internet",
       "ru": "Веб Сайт",
@@ -575,31 +575,7 @@
       "de": "Neue Aufgabe hinzufügen"
     },
 
-    LL_ADD_NEW_MY_QUESTS_ENTITY: {
-      "en": "Add New Task",
-      "fr": "Ajouter une nouvelle tâche",
-      "ru": "Добавить Новую Задачу",
-      "es": "Agregar nueva tarea",
-      "de": "Neue Aufgabe hinzufügen"
-    },
-
     LL_UPDATE_EXISTING_MY_ACTIVE_QUESTS_ENTITY: {
-      "en": "Update Existing Task",
-      "fr": "Mettre à jour la tâche existante",
-      "ru": "Обновить Существующую Задачу",
-      "es": "Actualizar tarea existente",
-      "de": "Vorhandene Aufgabe aktualisieren"
-    },
-
-    LL_UPDATE_EXISTING_MY_QUESTS_ENTITY: {
-      "en": "Update Existing Task",
-      "fr": "Mettre à jour la tâche existante",
-      "ru": "Обновить Существующую Задачу",
-      "es": "Actualizar tarea existente",
-      "de": "Vorhandene Aufgabe aktualisieren"
-    },
-
-    "LL_UPDATE_EXISTING_PRIVATE::QUESTS_ENTITY": {
       "en": "Update Existing Task",
       "fr": "Mettre à jour la tâche existante",
       "ru": "Обновить Существующую Задачу",
@@ -927,7 +903,7 @@
       "de": "Andere"
     },
 
-    LL_CRM_OWNER_HISTORY_CHANGE: {
+    LL_OWNER_HISTORY_CHANGE: {
       "en": "View history of customer representative changes",
       "fr": "Afficher l'historique des modifications des représentants clients",
       "ru": "Просмотреть историю изменения представителя заказчика",
@@ -1097,122 +1073,130 @@
 
     LL_LIST_OF_BUSINESS_FIELDS: {
       "en": "List of Business Info Fields",
-      "fr": "",
+      "fr": "Liste des champs d'informations sur l'entreprise",
       "ru": "Список Бизнесс Инфо Полей",
-      "es": "",
-      "de": ""
+      "es": "Lista de campos de información empresarial",
+      "de": "Liste der Geschäftsinfofelder"
     },
 
     LL_ADD_NEW_BUSINESS_FIELDS_FIELD: {
       "en": "Add New Business Info Field",
-      "fr": "",
+      "fr": "Ajouter un nouveau champ d'informations sur l'entreprise",
       "ru": "Добавить новое Бизнес Инфо Поле",
-      "es": "",
-      "de": ""
+      "es": "Agregar nuevo campo de información comercial",
+      "de": "Neues Geschäftsinfofeld hinzufügen"
     },
 
     LL_UPDATE_EXISTING_BUSINESS_FIELDS_FIELD: {
       "en": "Update Existing Business Info Field",
-      "fr": "",
-      "ru": "Изменить Существующее Бизнесс Инфо Поле",
-      "es": "",
-      "de": ""
+      "fr": "Mettre à jour le champ d'informations commerciales existantes",
+      "ru": "Изменить Существующее Бизнес Инфо Поле",
+      "es": "Actualizar el campo de información comercial existente",
+      "de": "Aktualisieren Sie das vorhandene Geschäftsinfofeld"
     },
 
     LL_LIST_OF_TASK_FCATS: {
       "en": "List of Task Categories",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Liste des catégories de tâches",
+      "ru": "Список категорий задач",
+      "es": "Lista de categorías de tareas",
+      "de": "Liste der Aufgabenkategorien"
     },
 
     LL_ADD_NEW_TASK_FCATS_FIELD_CAT: {
       "en": "Add New Task Category",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Ajouter une nouvelle catégorie de tâches",
+      "ru": "Добавить новую категорию задач",
+      "es": "Agregar nueva categoría de tarea",
+      "de": "Neue Aufgabenkategorie hinzufügen"
     },
 
     LL_UPDATE_EXISTING_TASK_FCATS_FIELD_CAT: {
       "en": "Update Existing Task Category",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Mettre à jour la catégorie de tâches existante",
+      "ru": "Обновить существующую категорию задач",
+      "es": "Actualizar categoría de tarea existente",
+      "de": "Aktualisieren Sie die vorhandene Aufgabenkategorie"
     },
 
     LL_LIST_OF_TASK_FIELDS: {
       "en": "List of Task Field",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Liste des champs de tâches",
+      "ru": "Список поля задачи",
+      "es": "Lista de campo de tarea",
+      "de": "Liste der Aufgabenfelder"
     },
 
     LL_ADD_NEW_TASK_FIELDS_FIELD: {
       "en": "Add New Task Field",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Ajouter un nouveau champ de tâche",
+      "ru": "Добавить новое поле задачи",
+      "es": "Agregar nuevo campo de tarea",
+      "de": "Neues Aufgabenfeld hinzufügen"
     },
 
     LL_UPDATE_EXISTING_TASK_FIELDS_FIELD: {
       "en": "Update Existing Task Field",
-      "fr": "",
+      "fr": "Mettre à jour le champ de tâche existant",
       "ru": "Изменить Существующее Поле Задачи",
-      "es": "",
-      "de": ""
+      "es": "Actualizar el campo de tareas existente",
+      "de": "Vorhandenes Aufgabenfeld aktualisieren"
     },
 
     LL_LIST_OF_CRM_FCATS: {
       "en": "List of CRM Categories",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Liste des catégories CRM",
+      "ru": "Список категорий CRM",
+      "es": "Lista de categorías de CRM",
+      "de": "Liste der CRM-Kategorien"
     },
 
     LL_ADD_NEW_CRM_FCATS_FIELD_CAT: {
       "en": "Add New CRM Category",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Ajouter une nouvelle catégorie CRM",
+      "ru": "Добавить новую категорию CRM",
+      "es": "Agregar nueva categoría de CRM",
+      "de": "Neue CRM-Kategorie hinzufügen"
     },
 
     LL_UPDATE_EXISTING_CRM_FCATS_FIELD_CAT: {
       "en": "Update Existing CRM Category",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Mettre à jour la catégorie CRM existante",
+      "ru": "Список полей CRM",
+      "es": "Actualizar categoría de CRM existente",
+      "de": "Vorhandene CRM-Kategorie aktualisieren"
     },
 
     LL_LIST_OF_CRM_FIELDS: {
       "en": "List of CRM Field",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Liste des champs CRM",
+      "ru": "Список полей CRM",
+      "es": "Lista de campos de CRM",
+      "de": "Liste der CRM-Felder"
     },
 
     LL_ADD_NEW_CRM_FIELDS_FIELD: {
       "en": "Add New CRM Field",
-      "fr": "",
-      "ru": "",
-      "es": "",
-      "de": ""
+      "fr": "Ajouter un nouveau champ CRM",
+      "ru": "Добавить новое поле CRM",
+      "es": "Agregar nuevo campo CRM",
+      "de": "Neues CRM-Feld hinzufügen"
     },
 
     LL_UPDATE_EXISTING_CRM_FIELDS_FIELD: {
       "en": "Update Existing CRM Field",
-      "fr": "",
+      "fr": "Mettre à jour le champ CRM existant",
       "ru": "Изменить Существующее Поле CRM",
-      "es": "",
-      "de": ""
+      "es": "Actualizar el campo CRM existente",
+      "de": "Vorhandenes CRM-Feld aktualisieren"
+    },
+
+    LL_SELECT_CRM_CATEGORY: {
+      "en": "Select CRM Category",
+      "fr": "Sélectionnez la catégorie CRM",
+      "ru": "Выберите CRM Категорию",
+      "es": "Seleccione la categoría CRM",
+      "de": "Wählen Sie die CRM-Kategorie"
     }
 
     /*
@@ -1232,6 +1216,9 @@
   
   SBS_LL_SET.LL_TASK_FCATS = SBS_LL_SET.LL_FIELD_CATS;
   SBS_LL_SET.LL_TASK_FIELDS = SBS_LL_SET.LL_FIELDS;
+  SBS_LL_SET.LL_ADD_NEW_MY_QUESTS_ENTITY = SBS_LL_SET.LL_ADD_NEW_MY_ACTIVE_QUESTS_ENTITY;
+  SBS_LL_SET.LL_UPDATE_EXISTING_MY_QUESTS_ENTITY = SBS_LL_SET.LL_UPDATE_EXISTING_MY_ACTIVE_QUESTS_ENTITY
+  SBS_LL_SET["LL_UPDATE_EXISTING_PRIVATE::QUESTS_ENTITY"] = SBS_LL_SET.LL_UPDATE_EXISTING_MY_ACTIVE_QUESTS_ENTITY;
 
   SBS_LL_SET.LL_CRM_FCATS = SBS_LL_SET.LL_FIELD_CATS;
   SBS_LL_SET.LL_CRM_FIELDS = SBS_LL_SET.LL_FIELDS;

@@ -537,7 +537,12 @@
   DateInput.prototype = new BaseInput();
 
   DateInput.prototype.get_input = function(mod_name, filters) {
-    this.dpicker = $('<input class="dpicker"' +
+    var dparams = $.datepicker.regional[this.web_app.lang];
+    dparams.beforeShow = function(textbox, instance) {
+        web_app.web_root.append($('#ui-datepicker-div'));
+      };
+
+    this.dpicker = $('<input class="field dpicker"' +
       (this.column.max_size !== undefined 
         ? ' maxlength="' + this.column.max_size + '"' 
         : "") + 
@@ -549,19 +554,17 @@
       (this.column.default_value !== undefined 
         ? ' value="' + this.column.default_value  + '"' 
         : "") +
-    '/>').datepicker(
-      $.datepicker.regional[this.web_app.lang]
-    );
+    '/>').datepicker(dparams);
 
     // Set Min Date
     if (this.column.from_now)
       this.dpicker.datepicker("option", "minDate", new Date());
 
-    this.hsel = $('<select class="hours" disabled>' + this.hours + '</select>');
-    this.msel = $('<select class="minutes" disabled>' + this.minutes + '</select>');
+    this.hsel = $('<select class="field hours" disabled>' + this.hours + '</select>');
+    this.msel = $('<select class="field minutes" disabled>' + this.minutes + '</select>');
 
-    this.cbtn = $('<button class="btn btn-secondary ml-2" disabled>' + this.web_app.t("LL_CLEAR") + '</button>');
-    this.nbtn = $('<button class="btn btn-primary ml-2">' + this.web_app.t("LL_NOW") + '</button>');
+    this.cbtn = $('<button class="btn btn-secondary ml-2 clear" disabled>' + this.web_app.t("LL_CLEAR") + '</button>');
+    this.nbtn = $('<button class="btn btn-primary ml-2 now">' + this.web_app.t("LL_NOW") + '</button>');
 
     this.el = $('<div class="field"></div>');
 
@@ -642,6 +645,9 @@
    * @param {Object} el 
    */
   DateInput.prototype.get_value = function() {
+    if (this.dpicker === undefined)
+      return;
+
     var value = this.dpicker.val();
 
     if (value == "")
@@ -675,7 +681,9 @@
 
   DateInput.prototype.set_dts = function(ditem) {
     var dts = new Date(ditem + (ditem.substr(ditem.length -1) != "Z" ? "Z" : ""));
-    this.dpicker.datepicker("setDate", dts);
+
+    // Standard datepicker("setDate") method won't work if date in a past
+    this.dpicker.val(web_app.format_date(dts));
 
     // Round minutes down
     var min = dts.getMinutes();

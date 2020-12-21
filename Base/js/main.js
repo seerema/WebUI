@@ -48,7 +48,7 @@
     // WebApp won't start if Web Service has different major version or lower version. 
     // The ws_ver[0] also could be a part of ws_path if nothing defined,
     // for example /api/v1
-    ws_ver: [2,0],
+    ws_ver: [1,2],
     
     err_list: ERR_LIST,
     
@@ -237,7 +237,7 @@
     this.modules[mod_name].data[name] = data;
     
     // Re-index data by id
-    this.modules[mod_name].hdata[name] = mod.web_app.reindex_data(data);
+    this.modules[mod_name].hdata[name] = mod.web_app.reindex_data(data, entity.on_reindex);
   };
 
   mod.index_fields = function(data) {

@@ -33,7 +33,7 @@
     // WebApp won't start if Web Service has different major version or lower version. 
     // The ws_ver[0] also could be a part of ws_path if nothing defined,
     // for example /api/v1
-    ws_ver: [2,0],
+    ws_ver: [1,2],
     
     // Is Web App can be configured. Default is false
     menu: [

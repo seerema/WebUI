@@ -123,6 +123,14 @@
 
   BaseTextInput.prototype.get_input = function(mod_name, filters) {
     this.input = this.get_text_input(mod_name, filters);
+
+    var filter = this.get_filter(this.column, filters);
+    if (filter.value !== undefined) {
+      this.set_value_ex(filter.value);
+      if (filter.read_only)
+        this.input.attr("disabled", true);
+    }
+
     return this.input;
   };
 
@@ -136,9 +144,16 @@
    * @param {Object} data 
    */
   BaseTextInput.prototype.set_value = function(data) {
-    if (this.input !== undefined) {
-      var value = data[this.column.db_name];
+    this.set_value_ex(data[this.column.db_name]);
+  };
 
+  /**
+   * Set value 
+   * 
+   * @param {Object} data 
+   */
+  BaseTextInput.prototype.set_value_ex = function(value) {
+    if (this.input !== undefined && value !== undefined) {
       // Aplly ont-the-fly translation, if required
       this.input.val(this.column.flang ? this.web_app.ts(value) : value);
     }
@@ -457,7 +472,9 @@
   StaticValueList.prototype = new StaticValue();
 
   StaticValueList.prototype.set_value = function(data) {
-    this.el.html(web_app.get_top_list_fmt_dts(data[this.column.db_name], "created"));
+    this.el.data("is_empty", web_app.is_empty_array(data[this.column.db_name]));
+    // this.el.html(web_app.get_top_list_fmt_dts(data[this.column.db_name], this.column.db_history_id));
+    this.el.html(this.column.render(data[this.column.db_name]));
   };
 
   StaticValueList.prototype.save_value = function(data) {
@@ -560,6 +577,10 @@
     if (this.column.from_now)
       this.dpicker.datepicker("option", "minDate", new Date());
 
+    // Set max date
+    if (this.column.till_now)
+      this.dpicker.datepicker("option", "maxDate", new Date());
+
     this.hsel = $('<select class="field hours" disabled>' + this.hours + '</select>');
     this.msel = $('<select class="field minutes" disabled>' + this.minutes + '</select>');
 
@@ -660,9 +681,9 @@
       return "";
 
     // Add time
-    var dts = new Date(date.getTime() +
-      Number.parseInt(this.hsel.val()) * 3600000 + 
-      Number.parseInt(this.msel.val()) * 60000);
+    
+    var dts = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 
+      Number.parseInt(this.hsel.val()), Number.parseInt(this.msel.val()));
     
     return dts.toISOString();
   };

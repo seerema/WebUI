@@ -14,6 +14,8 @@
 
 (function($, web_app) {
   
+  var PRIVATE_URL = "private/";
+
   var CRM_API = {
     api: "entity",
     type: "field_list",
@@ -82,7 +84,8 @@
       title: "LL_LAST_CONTACTED",
       type: "static_value_list",
       db_name: "cust_comm_histories",
-      
+      db_history_id: "created",
+
       can_show: function(data) {
         return data !== undefined;
       },
@@ -93,8 +96,27 @@
       
       history: {
         title: "LL_HISTORY_CUSTOMER_COMM",
-        type: "cust_comm",
-        icon: "action"
+        type: "cust_comm"
+      }
+    },
+    {
+      title: "LL_CUST_TASKS",
+      type: "static_value_list",
+      db_name: "cust_tasks",
+      db_history_id: "LL_DUE_DATE",
+
+      can_show: function(data) {
+        return data !== undefined;
+      },
+
+      render: function(data, type, row, meta) {
+        return data === undefined 
+          ? web_app.t("LL_NONE_F") : data.length;
+      },
+      
+      history: {
+        title: "LL_CUST_TASKS",
+        type: "cust_task"
       }
     }],
 
@@ -135,6 +157,17 @@
         // Reference on address formatter field
         formatter: "@city.region.country.addr_formatter"
       }
+    },
+
+    on_reindex: function(ditem) {
+      // Quick check
+      if (ditem === undefined)
+        return;
+        
+      // Attach future tasks, if any
+      var ft = web_app.mod.modules.task.hdata.crm_tasks[ditem.id];
+      if (ft !== undefined)
+        ditem.cust_tasks = ft;
     }
   };
 
@@ -203,6 +236,7 @@
     api: "cust_comm_history",
     type: "basic_entity",
     title: "LL_HISTORY_CUSTOMER_COMM",
+    security_prefix: PRIVATE_URL,
 
     "columns": [{
       title: "LL_COMM_MEDIA",
@@ -226,6 +260,7 @@
       title: "LL_CREATED",
       type: "date_input",
       db_name: "created",
+      till_now: true,
       formatter: function(data) {
         return web_app.format_date_time(data);
       },
@@ -277,11 +312,125 @@
     return LINKED;
   };
 
-  Crm.prototype.show_cust_comm_history = function(hspec, data) {
+  Crm.prototype.add_cust_comm_history = function(hspec, data, on_close) {
+    var me = this;
+
+    // Add cust status history hidden widget
+    var did = data.id;
+    var widget = this.get_entity_list_widget("cust_comm_histories/" + data.id, 
+      CUST_COMM_HISTORY, {entity: {id: data.id, value: data.id}}, function() {
+        me.on_cust_comm_history_close(data, did, on_close);
+    });
+
+    widget.hide();
+    this.mod.widgets.append_list(widget);
+
+    this.add_entity(CUST_COMM_HISTORY, "cust_comm_histories/" + data.id, 
+      {entity: {id: data.id, value: data.id}});
+  };
+
+  Crm.prototype.show_cust_comm_history = function(hspec, data, on_close) {
+    var me = this;
+    
     // Inject cust_com_history data
+    var did = data.id;
     CUST_COMM_HISTORY.xtype.data = data.cust_comm_histories;
     this.show_entities_ex("cust_comm_histories/" + data.id, 
-        CUST_COMM_HISTORY, {entity: {id: data.id, value: data.id}});
+        CUST_COMM_HISTORY, {entity: {id: data.id, value: data.id}}, function() {
+          me.on_cust_comm_history_close(data, did, on_close);
+    });
+  };
+
+  Crm.prototype.on_cust_comm_history_close = function(data, did, on_close) {
+    // Inject cust_com_history data
+    var ditem = web_app.mod.modules.crm.hdata["entities::lead"][3]["cust_comm_histories"];
+    data.cust_comm_histories = ditem;
+    CUST_COMM_HISTORY.xtype.data = ditem;
+
+    // Refresh the number of customer contact history
+    on_close(data);
+  };
+
+  Crm.prototype.add_cust_task_history = function(hspec, data, on_close) {
+    var task = web_app.mod.modules.task;
+    var field_cats = task.obj.get_entity('field_cats');
+
+    var did = data.id;
+    // Create virtual entity
+    var name = "cust_task";
+
+    var entity = this.get_virtual_entity(task, name, did);
+
+    // Add hidden widget with zero records
+    var me = this;
+    var widget = this.get_entity_list_widget(name, entity, {}, function() {
+      me.on_cust_task_close(task, entity, data, did, on_close);
+    });
+
+    widget.hide();
+    this.mod.widgets.append_list(widget);
+
+    task.obj.add_entity(entity, name, 
+      {
+        LL_CRM_ID: {
+          value: data.id,
+          read_only: true
+        }, 
+        field_cat: {
+          text: web_app.t(field_cats.crm_ditem.name),
+          value: field_cats.crm_ditem.id
+        }
+      });
+  };
+
+  Crm.prototype.show_cust_task_history = function(hspec, data, on_close) {
+    var task = web_app.mod.modules.task;
+    var field_cats = task.obj.get_entity('field_cats');
+
+    // Clone active entities and create virtual entity
+    var did = data.id;
+    var name = "cust_task";
+    var entity = this.get_virtual_entity(task, name, did);
+    
+    var me = this;
+    task.obj.show_entities_ex(name, entity, {
+      LL_CRM_ID: {
+        value: data.id,
+        read_only: true
+      }, 
+      field_cat: {
+        text: web_app.t(field_cats.crm_ditem.name),
+        value: field_cats.crm_ditem.id
+      }
+    }, function() {
+      me.on_cust_task_close(task, entity, data, did, on_close);
+    });
+  };
+
+  Crm.prototype.on_cust_task_close = function(task, entity, data, did, on_close) {
+    // Refresh the number of customer tasks
+    var cust_tasks = task.hdata.crm_tasks[did];
+    data.cust_tasks = cust_tasks;
+    entity.xtype.data = cust_tasks;
+    on_close(data);
+  };
+
+  Crm.prototype.get_virtual_entity = function(task, name, did) {
+    var entity = $.extend(true, {
+      title: name.toUpperCase(),
+      list: "entities", // Custom URL for refresh
+      on_reindex: task.obj.get_entity('entities').on_reindex,
+      on_clear_index: task.obj.get_entity('entities').on_clear_index,
+      post_refresh: function(data) {
+        return task.hdata.crm_tasks[did] !== undefined
+          ? task.hdata.crm_tasks[did] : [];
+      }}, task.obj.get_entity('entities::active'));
+    
+    entity.xtype.data = task.hdata.crm_tasks[did];
+    entity.xtype.name = "entities";
+    ENTITIES[name] = entity;
+
+    return entity;
   };
 
   web_app.mod.modules["crm"] = {

@@ -298,7 +298,7 @@
     var cfr = this.cfmap[column.db_name];
 
     return cfr === undefined || cfr !== undefined && 
-      cfr[data.field_cat.value] !== undefined;
+      data !== undefined && cfr[data.field_cat.value] !== undefined;
   };
 
   web_app.mod.entity_types["field_list"] = FieldList;

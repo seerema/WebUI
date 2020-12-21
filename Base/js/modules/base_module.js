@@ -101,7 +101,12 @@
     this.show_entities_ex(name, this.get_entity(name));
   };
 
-  BaseModule.prototype.show_entities_ex = function(name, entity, filter) {
+  BaseModule.prototype.show_entities_ex = function(name, entity, filter, on_close) {
+    var widget = this.get_entity_list_widget(name, entity, filter, on_close);
+    this.mod.widgets.append_list(widget);
+  };
+
+  BaseModule.prototype.get_entity_list_widget = function(name, entity, filter, on_close) {
     var widget = $('<div class="widget entity-list">' +
       '<h2 class="text-center">' + this.t("LL_LIST_OF_" + this.get_entity_title(name, entity)) + '</h2>' +
     '</div>');
@@ -110,7 +115,7 @@
     widget.data("name", name);
 
     var xtype = entity.xtype;
-    var fextra = xtype.data.length > 10;
+    var fextra = xtype.data !== undefined && xtype.data.length > 10;
     
     var wrapper = $('<div class="entity-list-wrapper"></div>');
 
@@ -156,23 +161,44 @@
     var me = this;
     
     // Assign row click if data not empty
-     $('tbody', table).on('click', 'tr', function () {
-        var data = entity.dtable.row( this ).data();
-        if (data !== undefined) {
-          // Quick check for read-only field
-          if (data.read_only)
-            return;
+    $('tbody', table).on('click', 'tr', function () {
+      var row = entity.dtable.row(this);
+      var data = row.data();
+      if (data !== undefined) {
+        // Quick check for read-only field
+        if (data.read_only)
+          return;
 
-          // Add filter, if any
-          if (filter !== undefined)
-            $.extend(data, filter);
-          me.show_update_entity(entity, name, data);
+        // Add filter, if any
+        if (filter !== undefined) {
+          for (var key in filter) {
+            // Only populate missing data
+            if (data[key] !== undefined)
+              continue;
+
+            var ditem = filter[key];
+              data[key] = {
+                id: ditem.value,
+                name: ditem.text
+            }
+          }
         }
-     });
+
+        me.show_update_entity(entity, name, data, function () {
+          if (entity.changed) {
+            // Refresh single row
+            row.invalidate();
+            entity.changed = false;
+          }
+        });
+      }
+    });
     
     // Assign button clicks
     $('button.wclose', widget).click(function(){
-      me.mod.widgets.close();
+      me.mod.widgets.close_list();
+      if (typeof on_close == "function")
+        on_close();
     });
     
     $('button.refresh', widget).click(function(){
@@ -183,7 +209,7 @@
       me.add_entity(entity, name, filter);
     });
     
-    this.mod.widgets.append(widget);
+    return widget;
   };
 
   BaseModule.prototype.add_entity = function(entity, name, filters, sname) {
@@ -222,7 +248,7 @@
     }
   };
 
-  BaseModule.prototype.show_add_entity = function(entity, name, filters, sname) {
+  BaseModule.prototype.show_add_entity = function(entity, name, filters, sname, on_close) {
     var me = this;
     
     this.show_entity(entity, name, undefined, sname, filters, "LL_ADD_NEW_",
@@ -249,101 +275,7 @@
 
             me.refresh_entity(name, entity, fresh);
           });
-      });
-  };
-
-  BaseModule.prototype.show_entity = function(entity, name, data, sname,
-                                                filters, stitle, on_save) {
-    var widget = this.get_widget(entity, name, data,
-                                sname, filters, stitle, on_save);
-
-    // Add custom buttons
-    if (entity.cust_btns !== undefined) {
-
-      for (var btn in entity.cust_btns) {}
-      
-    }
-
-    // Add main buttons
-    var btns = $('<div>' +
-      '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
-        (widget.data("bshow")
-          ? '<button type="button" class="btn btn-secondary back">' +
-            this.t("LL_BACK") + '</button>'
-          : "") +
-        '<button type="button" class="btn cancel">' +
-            this.t("LL_CANCEL") + '</button>' +
-        (data !== undefined 
-          ? '<button type="button" class="btn btn-secondary delete">' +
-            this.t("LL_DELETE") + '</button>'
-          : "") +
-        '<button type="button" class="btn btn-primary save">' +
-            this.t("LL_SAVE") + '</button>' +
-      '</div>' + 
-    '</div>');
-  
-    web_app.check_btn_authz(btns, this.get_btn_access_list());
-    widget.append(btns);
-    
-    // Assign event handlers
-    var me = this;
-    
-    $('button.cancel', btns).click(function() {
-      if (sname !== undefined)
-        me.mod.widgets.close_slides(sname, false);
-      else  
-        me.mod.widgets.close_all();
-    });
-    
-    if (widget.data("bshow"))
-      $("button.back", btns).click(function(){
-        me.mod.widgets.close_slide(sname);
-      });
-    
-    if (data !== undefined) {
-      $('button.delete', btns).click(function(){
-        me.delete_entity(entity, name, data);
-      });
-    }
-    
-    $('button.save', btns).click(function(){
-
-      // Check entity data b4 save
-      var vdata = me.check_b4_save(entity, data);
-      
-      if (vdata !== undefined)
-        // Save data
-        on_save(vdata);
-    });
-    
-    if (widget.data("history")) {
-      var hlist = widget.data("history");
-      
-      for (var key in hlist) {
-        var hspec = hlist[key];
-        
-        $('a.' + key + '-history', widget).click(
-          (function(hitem) {
-            return function() {
-              me["show_" + hitem.type + "_history"].call(me, hitem, data);
-            }
-          })(hspec)
-        );
-      }
-    }
-
-    if (sname !== undefined)
-      this.mod.widgets.append_slide(sname, widget);
-    else
-      this.mod.widgets.append(widget);
-    
-    if (data !== undefined) {
-      // Fill out data
-      for (var idx in entity.columns) {
-        var column = entity.columns[idx];
-        column.xtype.set_value(data);
-      }
-    }
+      }, on_close);
   };
 
   BaseModule.prototype.show_status_history = function(hspec, data) {
@@ -386,7 +318,7 @@
 
     dialog += '</table><div>' +
     '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
-      '<button type="button" class="btn close">' +
+      '<button type="button" class="btn btn-outline-secondary close">' +
         this.t("LL_CLOSE") + '</button></div></div></div>';
 
     var widget = $(dialog);
@@ -399,8 +331,67 @@
     this.mod.widgets.append(widget);
   };
 
+  BaseModule.prototype.show_entity = function(entity, name, data, sname,
+                                                filters, stitle, on_save, on_close) {
+    var me = this;
+    var widget = this.get_widget(entity, name, data,
+                                sname, filters, stitle, on_save, on_close);
+
+    if (widget.data("history")) {
+      var hlist = widget.data("history");
+      
+      for (var key in hlist) {
+        var hspec = hlist[key];
+        
+        $('a.' + key + '-history', widget).click(
+          (function(hitem) {
+            return function() {
+              // Check if history list is empty
+              var prefix = $(this).data("is_empty")
+                ? "add" : "show";
+              me[prefix + "_" + hitem.type + "_history"].call(me, hitem, data, 
+                function(data) {
+                  me.set_entity_data(entity, data, widget);
+                });
+            }
+          })(hspec)
+        );
+      }
+    }
+
+    if (sname === undefined)
+      this.mod.widgets.append(widget)
+    else
+      this.mod.widgets.append_slide(widget, sname);
+    
+    if (data !== undefined) 
+      this.set_entity_data(entity, data);
+  };
+
+  BaseModule.prototype.set_entity_data = function(entity, data, widget) {
+    // Fill out data
+    for (var idx in entity.columns) {
+      var column = entity.columns[idx];
+      column.xtype.set_value(data);
+
+      if (column.history !== undefined) {
+        var is_empty = column.input.data("is_empty");
+        
+        var btext = (is_empty) ?"LL_ADD" : "LL_VIEW";
+        column.input.next().children(0).html(web_app.t(btext));
+        column.input.next().data("is_empty", is_empty);
+      }
+    }
+
+    entity.changed = widget !== undefined;
+    if (entity.changed) {
+      // Replace cancel button with close
+      $('button.cancel', widget).html(web_app.t("LL_CLOSE")); 
+    }
+  };
+
   BaseModule.prototype.get_widget = function(entity, name, data, sname,
-                                                   filters, stitle, on_save) {
+                                                   filters, stitle, on_save, on_close) {
         // Check if custom title defined
     var title;
     if (entity.title_field !== undefined) {
@@ -439,7 +430,7 @@
 
       // Define input title. It could either simple label or reference on 
       // field containing label
-      var filter = column.xtype.get_filter(column, filters);
+      // var filter = column.xtype.get_filter(column, filters);
       var row = $('<tr>' +
         '<td class="field-title">' +
             // Check if custom title set
@@ -461,11 +452,8 @@
       if (column.history !== undefined) {
         var hname = column.history.type;
         var hst = $('<a href="#" class="' + hname + '-history ml-1">' + 
-          '<img class="history" title="' +
-          web_app.t(column.history.title) + 
-          '" src="' + web_app.root_path + 'images/' + 
-            (column.history.icon !== undefined ? column.history.icon : "history") +
-            '.png" /></a>');
+          '<button class="btn btn-sm btn-secondary">' +
+          web_app.t("LL_VIEW") + '</button></a>');
 
         hst.data("type", column.history.type);
         fval.append(hst);
@@ -488,10 +476,76 @@
     // Condition to show back button -> entity is in the chain and has workflow
     var bshow = sname !== undefined 
         && !web_app.is_empty_array(entity.workflows)
+        && this.mod.widgets.slides[sname] !== undefined
         && this.mod.widgets.slides[sname].idx > 0;
 
     widget.append(table);
     widget.data("bshow", bshow);
+
+    // Add custom buttons
+    if (entity.cust_btns !== undefined) {
+      var cbtns = $('<div class="d-flex justify-content-center entity-ctrl-btns"></div>');
+      for (var idx in entity.cust_btns) {
+        var bd = entity.cust_btns[idx];
+        var b = $('<button type="button" class="btn">' +
+          this.t(bd.title) + '</button>');
+        b.click(function() {
+          bd.action(data);
+        });
+        cbtns.append(b);
+      }
+      widget.append(cbtns);
+    }
+
+    // Add main buttons
+    var me = this;
+
+    var btns = $('<div>' +
+      '<div class="d-flex justify-content-center entity-ctrl-btns">' + 
+        (widget.data("bshow")
+          ? '<button type="button" class="btn btn-secondary back">' +
+            this.t("LL_BACK") + '</button>'
+          : "") +
+        '<button type="button" class="btn cancel">' +
+            this.t("LL_CANCEL") + '</button>' +
+        (data !== undefined 
+          ? '<button type="button" class="btn btn-secondary delete">' +
+            this.t("LL_DELETE") + '</button>'
+          : "") +
+        '<button type="button" class="btn btn-primary save">' +
+            this.t("LL_SAVE") + '</button>' +
+      '</div>' + 
+    '</div>');
+  
+    web_app.check_btn_authz(btns, this.get_btn_access_list());
+    widget.append(btns);
+    
+    // Assign event handlers
+    $('button.cancel', btns).click(function() {
+      me.mod.widgets.close_ex(sname, false);
+      if (entity.changed && typeof on_close == "function")
+        on_close();
+    });
+    
+    if (widget.data("bshow"))
+      $("button.back", btns).click(function(){
+        me.mod.widgets.close_slide(sname);
+      });
+    
+    if (data !== undefined) {
+      $('button.delete', btns).click(function(){
+        me.delete_entity(entity, name, data);
+      });
+    }
+    
+    $('button.save', btns).click(function(){
+      // Check entity data b4 save
+      var vdata = me.check_b4_save(entity, data);
+      
+      if (vdata !== undefined)
+        // Save data
+        on_save(vdata);
+    });
 
     return widget;
   };
@@ -631,7 +685,7 @@
       me.add_new_workflow(entity, wflow, params.filters, entity.api, on_select, params);
     });
 
-    this.mod.widgets.append_slide(entity.api, widget);
+    this.mod.widgets.append_slide(widget, entity.api);
   };
   
   BaseModule.prototype.add_new_workflow = function(rent, wflow, filters, sname, 
@@ -721,13 +775,19 @@
 
   BaseModule.prototype.refresh_entity_data = function(name, entity, fresh, linked) {
     var me = this;
+    var url = entity.list !== undefined ? entity.list : name;
 
     //-- 14
     web_app.get_ajax_ext(web_app.make_rel_req(
-              this.get_mod_prefix() + name.replace("::", "/")), 14,
+              this.get_mod_prefix() + url.replace("::", "/")), 14,
       function(data) {
+        if (typeof entity.on_clear_index == "function")
+          entity.on_clear_index();
+
         me.mod.load_entity(me.name, entity, name, data);
         data = entity.xtype.refresh_data(data);
+        if (typeof entity.post_refresh == "function")
+          data = entity.post_refresh(data);
 
         // Check if any linked elements needs to be updated
         if (linked !== undefined) {
@@ -839,7 +899,7 @@
     return filter;
   };
   
-  BaseModule.prototype.show_update_entity = function(entity, name, data) {
+  BaseModule.prototype.show_update_entity = function(entity, name, data, on_close) {
     var me = this;
     
     // Define filters for static fields
@@ -863,7 +923,7 @@
             me.mod.widgets.close();
             me.refresh_entity(name, entity);
           });
-      });
+      }, on_close);
   };
 
   BaseModule.prototype.show_entity_slide = function(entity, name, title, on_select) {

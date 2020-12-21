@@ -1197,6 +1197,54 @@
       "ru": "Выберите CRM Категорию",
       "es": "Seleccione la categoría CRM",
       "de": "Wählen Sie die CRM-Kategorie"
+    },
+
+    LL_CUST_TASKS: {
+      "en": "Customer Tasks",
+      "fr": "Tâches client",
+      "ru": "Клиентские задачи",
+      "es": "Tareas del cliente",
+      "de": "Kundenaufgaben"
+    },
+
+    LL_VIEW: {
+      "en": "View",
+      "fr": "Vue",
+      "ru": "Просмотр",
+      "es": "Ver",
+      "de": "Aussicht"
+    },
+
+    LL_NONE_F: {
+      "en": "None",
+      "fr": "Aucune",
+      "ru": "Никаких",
+      "es": "Ninguna",
+      "de": "Keiner"
+    },
+
+    LL_LIST_OF_CUST_TASK: {
+      "en": "List of customer tasks",
+      "fr": "Liste des tâches client",
+      "ru": "Список клиентских задач",
+      "es": "Lista de tareas del cliente",
+      "de": "Liste der Kundenaufgaben"
+    },
+
+    LL_ADD_NEW_CUST_TASK_ENTITY: {
+      "en": "Add new customer task",
+      "fr": "Ajouter une nouvelle tâche client",
+      "ru": "Добавить новую клиентскую задачу",
+      "es": "Agregar nueva tarea de cliente",
+      "de": "Neue Kundenaufgabe hinzufügen"
+    },
+
+    LL_UPDATE_EXISTING_CUST_TASK_ENTITY: {
+      "en": "Update existing customer task",
+      "fr": "Mettre à jour la tâche client existante",
+      "ru": "Обновить существующую клиентскую задачу",
+      "es": "Actualizar la tarea del cliente existente",
+      "de": "Aktualisieren Sie die vorhandene Kundenaufgabe"
     }
 
     /*

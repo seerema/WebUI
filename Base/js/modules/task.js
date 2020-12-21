@@ -105,20 +105,40 @@
   MGR_QUEST_API.columns.push(
     web_app.mod.get_user_hist_column("LL_OWNER_HISTORY_CHANGE", "LL_CUST_REP"));
 
+  var TASK_FCATS = web_app.mod.get_field_cats_entity("TASK_FCATS");
+  TASK_FCATS.on_reindex = function(ditem) {
+    if (ditem.name == "LL_CRM")
+      TASK_FCATS.crm_ditem = ditem;
+  };
+
+  var TASK_FIELDS = web_app.mod.get_fields_entity("TASK_FIELDS", "LL_SELECT_TASK_CATEGORY");
+  TASK_FIELDS.on_reindex = function(ditem) {
+    if (ditem.name == "LL_CRM_ID")
+      TASK_FIELDS.crm_ditem = ditem;
+  };
+
   // List of entities with field mapping
   var ENTITIES = {
-    "field_cats": web_app.mod.get_field_cats_entity("TASK_FCATS"),
+    "field_cats": TASK_FCATS,
 
-    "fields": web_app.mod.get_fields_entity("TASK_FIELDS", "LL_SELECT_TASK_CATEGORY"),
+    "fields": TASK_FIELDS,
 
     // My Active quests
     'entities::active': $.extend(true, {title: "my_active_quests"}, QUEST_API),
 
     // All my quests
-    'entities': $.extend(true, {title: "my_quests", disable_update: true}, QUEST_API),
+    'entities': $.extend(true, {
+        title: "my_quests", 
+        disable_update: true,
+        on_clear_index: function() {
+          delete web_app.mod.modules.task.hdata.crm_tasks;
+        },
+        on_reindex: find_crm_task
+      }, QUEST_API),
 
     // All quests
-    'private::entities': $.extend(true, {title: "private::quests"}, MGR_QUEST_API),
+    'private::entities': $.extend(true, {title: "private::quests",
+        on_reindex: find_crm_task}, MGR_QUEST_API),
 
     "statuses": {
       hidden: true,
@@ -151,6 +171,35 @@
     }
   };
   
+  function find_crm_task(ditem) {
+    var hdata = web_app.mod.modules.task.hdata.crm_tasks;
+    if (hdata === undefined) {
+      hdata = {};
+      web_app.mod.modules.task.hdata.crm_tasks = hdata;
+    }
+
+    // Quick check on null
+    if (ditem === undefined)
+      return;
+      
+    if (ditem.field_cat.id == TASK_FCATS.crm_ditem.id) {
+      // Look for the entity field
+      for (var idx in ditem.entity_fields) {
+        var ef = ditem.entity_fields[idx];
+        if (ef.field.id == TASK_FIELDS.crm_ditem.id) {
+          var efl = hdata[ef.value];
+          if (efl === undefined) {
+            efl = [];
+            hdata[ef.value] = efl;
+          }
+
+          efl.push(ditem);
+          break;
+        }
+      }
+    }
+  };
+
   // Linked entities that needs to be refreshed
   // when either one changes
   var LINKED = ['entities::active', 'entities', 'private::entities'];

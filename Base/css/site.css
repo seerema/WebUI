@@ -66,7 +66,6 @@
     transition: all 0.3s;
 }
 
-
 /* Main context */
 .sbs  .main-context {
 	width: 100%;
@@ -186,4 +185,13 @@
 
 .sbs .widget>h2 { 
     padding-top: 10px;
+}
+
+.sbs .btn-sm {
+    font-size: 0.9em;
+    padding: 0 6px;
+}
+
+.sbs span.field-static {
+    vertical-align: middle;
 }

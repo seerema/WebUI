@@ -19,7 +19,8 @@
     this.widx = 0;
     this.widgets = [];
     this.slides = {};
-    
+    this.marks = [];
+
     // Top level web context DOM element where all widget should be attached/removes
     this.ctx = ctx;
   }
@@ -30,11 +31,22 @@
     this.widgets = [];
     this.ctx.empty();
     this.slides = {};
-    
+    this.marks = [];
+
     // For now always return OK
     return true;
   };
   
+  /**
+   * Append widget with entity list and add mark to return later
+   * 
+   * @param {*} widget 
+   */
+  WidgetChain.prototype.append_list = function(widget) {
+    this.append(widget);
+    this.marks.push(this.widgets.length);
+  };
+
   WidgetChain.prototype.append = function(widget) {
     this.append_widget(this.widgets, widget);
   };
@@ -44,13 +56,12 @@
     if (widgets.length > 0)
       widgets[widgets.length - 1].hide();
     
-    // Display the new widget
+    // Add new widget to model and context
     widgets.push(widget);
-    
     this.ctx.append(widget);
   };
   
-  WidgetChain.prototype.append_slide = function(name, widget) {
+  WidgetChain.prototype.append_slide = function(widget, name) {
     var slide = this.slides[name];
     if (slide === undefined) {
       slide = this.init_slides(name);
@@ -77,16 +88,39 @@
     return slide;
   };
 
+  /**
+   * Close all widget or current slide show
+   * 
+   * @param {Slide show name} name 
+   */
+  WidgetChain.prototype.close_ex = function(name) {
+    if (name !== undefined)
+      this.close_slides(name);
+    else
+      this.close_all();
+  };
+
   WidgetChain.prototype.close_slide = function(name) {
     this.close_slide_ext(name, true);
   };
   
+  /**
+   * Close current widget from slide show
+   * @param {string} name slide show name
+   * @param {boolean} fshow Flag to show previous widget
+   */
   WidgetChain.prototype.close_slide_ext = function(name, fshow) {
     var slide = this.slides[name];
-    this.close_widget(this.slides[name].widgets, fshow);
+    this.close_widget(slide.widgets, fshow);
     slide.idx--;
   };
 
+  /**
+   * Close slide show
+   * 
+   * @param {string} name Slide name 
+   * @param {boolean} fsaved Flag to close all linked slide shows 
+   */
   WidgetChain.prototype.close_slides = function(name, fsaved) {
     this.close_widgets(this.slides[name].widgets, 0);
     var linked = this.slides[name].linked;
@@ -125,6 +159,11 @@
     this.close_widget(this.widgets, true);
   };
   
+  WidgetChain.prototype.close_list = function() {
+    this.marks.pop();
+    this.close_widget(this.widgets, true);
+  };
+
   WidgetChain.prototype.close_widgets = function(widgets, idx) {
     while (widgets.length > idx) {
       this.close_widget(widgets, false);
@@ -132,10 +171,11 @@
   };
   
   /**
-   * Close all widgets in main chain except first one
+   * Close all widgets in main chain until recent mark
    */
   WidgetChain.prototype.close_all = function() {
-    this.close_widgets(this.widgets, 1);
+    var mark = this.marks[this.marks.length - 1];
+    this.close_widgets(this.widgets, mark);
     
     // Display the first one
     this.show();

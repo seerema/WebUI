@@ -224,11 +224,7 @@
     // All loaded lang set
     this.lls = [];
     
-    // List of external modules
-    this.modules = {};
-    
     this.page_loader_id = "page-loader";
-    
     web_app.mod = new Mod(web_app);
   };
   
@@ -433,8 +429,8 @@
     if ($("img.menu", this.web_root).length > 0)
       return;
       
-    var menu_btn = $('<img class="menu" src="' + this.root_path +
-      'shared/images/menu.png" />');
+    this.menu_btn = $('<img class="menu" src="' + this.root_path +
+      'shared/images/menu.png" title="' + $.cookie("USER_ID") + '"/>');
     var menu = $('<div class="menu hidden"></div>');
         
     var me = this;
@@ -474,10 +470,10 @@
     }
       
     menu.append(ul);
-    this.web_root.append(menu_btn);
+    this.web_root.append(this.menu_btn);
     this.web_root.append(menu);
     
-    menu_btn.click(function() {
+    this.menu_btn.click(function() {
       menu.fadeToggle("slow");
     });
   };
@@ -744,45 +740,57 @@
     // Disable sign-in button
     this.enable_wait_btn(btn);
     
+    var user_id = $("input.username", this.login_win).val();
     this.post_ajax_data(me.make_rel_req_query(LOGIN_URL, undefined, 
-    'usr=' + $("input.username", this.login_win).val() + '&' +
-    'pwd=' + $("input.password", this.login_win).val()), 0, 
-    function(data) {
-      if (me.is_empty(data)) {
-        err_msg.show().html("LL_ERROR_EMPTY_AUTH_RESPONSE");
-        return;
-      }
-      
-      // Collect roles
-      if (me.is_empty_array(data.roles)) {
-        err_msg.show().html("LL_ERROR_INVALID_USER_CONFIG_NO_ROLES");
-        return;
-      }
-      
-      // Save role list in cookie
-      $.cookie("ROLES", data.roles.join(","));
-      
-      // Enable sign-in button
-      me.disable_wait_btn(btn);
-      
-      // Close popup
-      window.setTimeout(function() {
-        me.login_win.bPopup().close();
-      }, 0);
-    },
-    function(msg, error) {
-      if (error == 401) {
-        err_msg.show().html(me.t("LL_ERROR_INVALID_CREDENTIALS"));
-      } else {
-        err_msg.show().html(msg);
-      }
-      
-      // Enable sign-in button
-      me.disable_wait_btn(btn);
-      
-    }, "application/x-www-form-urlencoded");
+      'usr=' + user_id + '&' +
+      'pwd=' + $("input.password", this.login_win).val()), 0, 
+      function(data) {
+        if (me.is_empty(data)) {
+          err_msg.show().html("LL_ERROR_EMPTY_AUTH_RESPONSE");
+          return;
+        }
+        
+        // Collect roles
+        if (me.is_empty_array(data.roles)) {
+          err_msg.show().html("LL_ERROR_INVALID_USER_CONFIG_NO_ROLES");
+          return;
+        }
+        
+        // Set new userid
+        me.set_user_id(user_id);
+          
+        // Save role list in cookie
+        $.cookie("ROLES", data.roles.join(","));
+        
+        // Enable sign-in button
+        me.disable_wait_btn(btn);
+        
+        // Close popup
+        window.setTimeout(function() {
+          me.login_win.bPopup().close();
+        }, 0);
+      },
+      function(msg, error) {
+        if (error == 401) {
+          err_msg.show().html(me.t("LL_ERROR_INVALID_CREDENTIALS"));
+        } else {
+          err_msg.show().html(msg);
+        }
+        
+        // Enable sign-in button
+        me.disable_wait_btn(btn);
+        
+      }, "application/x-www-form-urlencoded");
   };
   
+  WebApp.prototype.set_user_id = function(user_id) {
+    // Save userid in cookie
+    $.cookie("USER_ID", user_id);
+    // Update menu button (if visible)
+    if (this.menu_btn !== undefined)
+      this.menu_btn.attr("title", user_id);
+  };
+
   WebApp.prototype.check_btn_authz = function(container, config) {
     $("button", container).each(function(){
       var btn = $(this);
@@ -868,15 +876,23 @@
   /**
    * Re-index data array by element's' id
    */
-  WebApp.prototype.reindex_data = function(data) {
+  WebApp.prototype.reindex_data = function(data, callback) {
     // Quick check
-    if (this.is_empty_array(data))
+    if (this.is_empty_array(data)) {
+      // Call re-index one time on empty dataset
+      if (typeof callback == "function")
+        callback(ditem);
       return;
-      
+    }
+
     var hdata = {};
-    for (var idx in data)
-      hdata[data[idx].id] = data[idx];
-      
+    for (var idx in data) {
+      var ditem = data[idx];
+      hdata[ditem.id] = ditem;
+      if (typeof callback == "function")
+        callback(ditem);
+    }
+    
     return hdata;
   };
   
